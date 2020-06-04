@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright 2020 Johan Dykström
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane prefHeight="500.0" prefWidth="450.0" stylesheets="@../css/bootstrap3.css"
+            xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="se.dykstrom.standup.gui.SettingsController">
+    <content>
+        <VBox>
+            <TitledPane animated="false" collapsible="false" text="General settings">
+                <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0"/>
+                        <ColumnConstraints hgrow="NEVER" minWidth="10.0" prefWidth="100.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER"/>
+                        <RowConstraints minHeight="40.0" prefHeight="40.0" vgrow="NEVER"/>
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                        <RowConstraints minHeight="30.0" prefHeight="30.0" vgrow="NEVER"/>
+                        <RowConstraints/>
+                    </rowConstraints>
+
+                    <Label alignment="CENTER" mnemonicParsing="true" text="_Sleep time:">
+                        <GridPane.margin>
+                            <Insets right="5.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <Spinner fx:id="sleepTimeSpinner" editable="true" GridPane.columnIndex="1"/>
+                    <Label text="minutes" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+                        <GridPane.margin>
+                            <Insets left="5.0"/>
+                        </GridPane.margin>
+                    </Label>
+
+                    <CheckBox fx:id="playSoundCheckBox" text="_Play sound:" GridPane.rowIndex="1"/>
+                    <TextField fx:id="filenameTextField" disable="true" GridPane.columnIndex="1" GridPane.columnSpan="2"
+                               GridPane.rowIndex="1"/>
+                    <Button fx:id="browseButton" disable="true" onAction="#handleBrowseAction" styleClass="sm"
+                            text="_Browse" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                        <GridPane.margin>
+                            <Insets left="5.0"/>
+                        </GridPane.margin>
+                    </Button>
+
+                    <CheckBox fx:id="reminderCheckBox" text="_Annoying reminder" GridPane.columnSpan="4"
+                              GridPane.rowIndex="2"/>
+
+                    <CheckBox fx:id="morningCheckBox" text="_Good morning message" GridPane.columnSpan="4"
+                              GridPane.rowIndex="3"/>
+                </GridPane>
+            </TitledPane>
+
+            <TitledPane animated="false" collapsible="false" text="Messages">
+                <HBox>
+                    <ListView fx:id="messagesListView" editable="true" prefHeight="200.0" prefWidth="200.0"
+                              GridPane.columnSpan="3" GridPane.rowIndex="5" HBox.hgrow="ALWAYS"/>
+                    <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="3" GridPane.rowIndex="5"
+                          HBox.hgrow="NEVER">
+                        <Button mnemonicParsing="false" onAction="#handleAddAction" styleClass="sm">
+                            <graphic>
+                                <ImageView>
+                                    <Image url="@../images/plus-16.png"/>
+                                </ImageView>
+                            </graphic>
+                            <VBox.margin>
+                                <Insets bottom="5.0" left="5.0"/>
+                            </VBox.margin>
+                        </Button>
+                        <Button fx:id="removeButton" disable="true" mnemonicParsing="false"
+                                onAction="#handleRemoveAction" styleClass="sm">
+                            <graphic>
+                                <ImageView>
+                                    <Image url="@../images/minus-16.png"/>
+                                </ImageView>
+                            </graphic>
+                            <VBox.margin>
+                                <Insets left="5.0"/>
+                            </VBox.margin>
+                        </Button>
+                    </VBox>
+                </HBox>
+                <VBox.margin>
+                    <Insets top="5.0"/>
+                </VBox.margin>
+            </TitledPane>
+        </VBox>
+    </content>
+    <ButtonType fx:constant="OK"/>
+    <ButtonType fx:constant="CANCEL"/>
+</DialogPane>
