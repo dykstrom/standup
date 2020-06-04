@@ -25,10 +25,8 @@ Replace `<version>` with the version of StandUp you installed, for example 4.0.0
 
 Click the `Hide` button to hide the application window and be reminded later. Click `File | Settings...` to configure things like how often you want to be reminded, and what messages to display. Enjoy!
 
-<img src="docs/settings.png" alt="Settings dialog" width="200"/>
+<img src="docs/settings.png" alt="Settings dialog" width="300"/>
 
 ---
 
-<small>
 [JavaFX](https://openjfx.io) GUI styled with [jbootx](https://github.com/dicolar/jbootx) theme. Icons from [iconsDB.com](https://www.iconsdb.com) in colors <span style="color:#286090">#286090</span> and <span style="color:#0096C9">#0096C9</span>.
-</small>
