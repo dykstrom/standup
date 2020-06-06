@@ -40,6 +40,9 @@ public final class AppConfig {
 
     private static final String FILE_NAME = System.getProperty("user.home") + "/standup.json";
 
+    /** Cached settings. */
+    private static Settings cachedSettings;
+
     private AppConfig() { }
 
     /**
@@ -100,13 +103,17 @@ public final class AppConfig {
      * Returns all settings in the form of a {@link Settings} object.
      */
 	public static Settings getSettings() {
+	    if (cachedSettings != null) {
+	        return cachedSettings;
+        }
+
 	    if (Files.notExists(Path.of(FILE_NAME))) {
 	        return new Settings();
         }
 	    try (FileReader reader = new FileReader(FILE_NAME, StandardCharsets.UTF_8)) {
             Gson gson = new Gson();
-            Settings settings = gson.fromJson(reader, Settings.class);
-            return settings == null ? new Settings() : settings;
+            cachedSettings = gson.fromJson(reader, Settings.class);
+            return cachedSettings == null ? new Settings() : cachedSettings;
         } catch (IOException e) {
             LOGGER.log(ERROR, "Failed to load settings, returning default values", e);
             return new Settings();
@@ -117,6 +124,8 @@ public final class AppConfig {
      * Saves all settings to persistent storage.
      */
     public static void setSettings(Settings settings) {
+        cachedSettings = settings;
+
         try (Writer writer = new FileWriter(FILE_NAME, StandardCharsets.UTF_8)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(settings, writer);
