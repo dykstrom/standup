@@ -30,3 +30,5 @@ Click the `Hide` button to hide the application window and be reminded later. Cl
 ---
 
 [JavaFX](https://openjfx.io) GUI styled with [jbootx](https://github.com/dicolar/jbootx) theme. Icons from [iconsDB.com](https://www.iconsdb.com) in colors <span style="color:#286090">#286090</span> and <span style="color:#0096C9">#0096C9</span>.
+
+[![Build Status](https://travis-ci.com/dykstrom/standup.svg?branch=master)](https://travis-ci.com/dykstrom/standup)
