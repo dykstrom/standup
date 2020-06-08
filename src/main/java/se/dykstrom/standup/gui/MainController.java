@@ -56,6 +56,9 @@ public class MainController implements Initializable {
     /** The date when the frame was last displayed. Used to find out if midnight has passed. */
     private LocalDate lastDisplayDate;
 
+    /** The audio clip to play when showing the main window. */
+    private AudioClip audioClip;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         label.setText(getRandomMessage());
@@ -63,6 +66,10 @@ public class MainController implements Initializable {
 
     @FXML
     private void handleHideAction(ActionEvent event) {
+        if (audioClip != null) {
+            audioClip.stop();
+        }
+
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.hide();
 
@@ -86,8 +93,8 @@ public class MainController implements Initializable {
                     // Convert the filename to an URL
                     source = Paths.get(filename).toUri().toString();
                 }
-                AudioClip clip = new AudioClip(source);
-                clip.play();
+                audioClip = new AudioClip(source);
+                audioClip.play();
             }
 
             stage.show();
