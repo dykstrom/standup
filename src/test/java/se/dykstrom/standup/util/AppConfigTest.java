@@ -24,6 +24,7 @@ import se.dykstrom.standup.model.Settings;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 class AppConfigTest {
 
@@ -50,5 +51,20 @@ class AppConfigTest {
 
         // Then
         assertEquals(expectedSettings, actualSettings);
+    }
+
+    @Test
+    void shouldReturnSameInstanceEveryTime() {
+        // Given
+        Settings savedSettings = new Settings();
+
+        // When
+        AppConfig.setSettings(savedSettings);
+        Settings firstSettings = AppConfig.getSettings();
+        Settings secondSettings = AppConfig.getSettings();
+
+        // Then
+        assertSame(savedSettings, firstSettings);
+        assertSame(firstSettings, secondSettings);
     }
 }
