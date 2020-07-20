@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>se.dykstrom.standup</groupId>
     <artifactId>standup</artifactId>
-    <version>4.0.1-SNAPSHOT</version>
+    <version>4.0.1</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,7 +14,7 @@
 
     <scm>
         <developerConnection>scm:git:https://github.com/dykstrom/standup.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>standup-4.0.1</tag>
     </scm>
 
     <dependencies>
