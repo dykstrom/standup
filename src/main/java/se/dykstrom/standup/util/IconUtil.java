@@ -19,6 +19,8 @@ package se.dykstrom.standup.util;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
+import static java.util.Objects.requireNonNull;
+
 /**
  * Icon utility methods.
  */
@@ -31,8 +33,8 @@ public final class IconUtil {
      */
     public static void setIcons(Stage stage) {
         stage.getIcons().addAll(
-                new Image(IconUtil.class.getResourceAsStream("/images/arrow-186-16.png")),
-                new Image(IconUtil.class.getResourceAsStream("/images/arrow-186-32.png"))
+                new Image(requireNonNull(IconUtil.class.getResourceAsStream("/images/arrow-186-16.png"))),
+                new Image(requireNonNull(IconUtil.class.getResourceAsStream("/images/arrow-186-32.png")))
         );
     }
 }

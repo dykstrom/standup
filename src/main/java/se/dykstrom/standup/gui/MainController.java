@@ -16,20 +16,6 @@
 
 package se.dykstrom.standup.gui;
 
-import javafx.animation.FadeTransition;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.control.*;
-import javafx.scene.media.AudioClip;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import se.dykstrom.standup.model.Settings;
-import se.dykstrom.standup.util.AppConfig;
-import se.dykstrom.standup.util.IconUtil;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -42,6 +28,24 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.media.AudioClip;
+import javafx.stage.Stage;
+import javafx.util.Duration;
+import se.dykstrom.standup.model.Settings;
+import se.dykstrom.standup.util.AppConfig;
+import se.dykstrom.standup.util.IconUtil;
+
 /**
  * A controller class for the main window.
  */
@@ -52,6 +56,8 @@ public class MainController implements Initializable {
 
     /** Used to schedule the wake-up task that shows the main window after some time. */
     private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+
+    private final Random random = new Random();
 
     /** The date when the frame was last displayed. Used to find out if midnight has passed. */
     private LocalDate lastDisplayDate;
@@ -90,7 +96,7 @@ public class MainController implements Initializable {
                     // The filename is not a filename at all, but a URL
                     source = filename;
                 } else {
-                    // Convert the filename to an URL
+                    // Convert the filename to a URL
                     source = Paths.get(filename).toUri().toString();
                 }
                 audioClip = new AudioClip(source);
@@ -190,7 +196,7 @@ public class MainController implements Initializable {
      */
     private String getRandomMessage() {
         List<String> messages = AppConfig.getMessages();
-        return messages.get(new Random().nextInt(messages.size()));
+        return messages.get(random.nextInt(messages.size()));
     }
 
     /**

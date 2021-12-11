@@ -16,13 +16,13 @@
 
 package se.dykstrom.standup.gui;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import se.dykstrom.standup.util.Version;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * A controller class for the About dialog.
@@ -36,7 +36,7 @@ public class AboutController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        versionLabel.setText("Version " + Version.instance().toString());
-        copyrightLabel.setText("\u00a9 2001-2020 Johan Dykström");
+        versionLabel.setText("Version " + Version.instance());
+        copyrightLabel.setText("\u00a9 2001-2021 Johan Dykström");
     }
 }

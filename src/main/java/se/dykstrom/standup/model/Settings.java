@@ -88,14 +88,13 @@ public final class Settings {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Settings)) return false;
-        Settings settings = (Settings) o;
-        return sleepTime == settings.sleepTime &&
-                reminder == settings.reminder &&
-                playSound == settings.playSound &&
-                morningMessage == settings.morningMessage &&
-                soundFilename.equals(settings.soundFilename) &&
-                messages.equals(settings.messages);
+        if (!(o instanceof Settings that)) return false;
+        return this.sleepTime == that.sleepTime &&
+               this.reminder == that.reminder &&
+               this.playSound == that.playSound &&
+               this.morningMessage == that.morningMessage &&
+               this.soundFilename.equals(that.soundFilename) &&
+               this.messages.equals(that.messages);
     }
 
     @Override

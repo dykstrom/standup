@@ -17,6 +17,7 @@
 package se.dykstrom.standup.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Properties;
 
@@ -45,15 +46,15 @@ public final class Version {
     }
 
     private Version() {
-        try {
-            URL url = Version.class.getResource("/version.properties");
-            if (url != null) {
+        URL url = Version.class.getResource("/version.properties");
+        if (url != null) {
+            try (InputStream is = url.openStream()) {
                 Properties properties = new Properties();
-                properties.load(url.openStream());
-                version = properties.getProperty("standup.version");
+                properties.load(is);
+                version = properties.getProperty("standup.version", version);
+            } catch (IOException ignore) {
+                // Ignore
             }
-        } catch (IOException ignore) {
-            // Ignore
         }
     }
 
