@@ -1,0 +1,12 @@
+#!/bin/sh
+
+ORIGINAL_DIR="$PWD"
+function finish {
+  cd "$ORIGINAL_DIR"
+}
+trap finish EXIT
+
+SCRIPT_DIR=$(dirname -- "$0")
+cd "$SCRIPT_DIR"
+
+image/bin/java -m se.dykstrom.standup/se.dykstrom.standup.StandUp "$@"

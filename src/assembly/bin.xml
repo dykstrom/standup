@@ -13,14 +13,32 @@
             <includes>
                 <include>README.md</include>
                 <include>LICENSE</include>
+                <include>docs/*</include>
             </includes>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}</directory>
             <outputDirectory/>
             <includes>
-                <include>standup-*.jar</include>
+                <include>image/**/*</include>
             </includes>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/scripts</directory>
+            <outputDirectory/>
+            <fileMode>775</fileMode>
+            <includes>
+                <include>standup</include>
+            </includes>
+            <lineEnding>unix</lineEnding>
+        </fileSet>
+        <fileSet>
+            <directory>${project.build.directory}/scripts</directory>
+            <outputDirectory/>
+            <includes>
+                <include>standup.bat</include>
+            </includes>
+            <lineEnding>windows</lineEnding>
         </fileSet>
     </fileSets>
 </assembly>
