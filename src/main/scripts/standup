@@ -6,7 +6,13 @@ function finish {
 }
 trap finish EXIT
 
-SCRIPT_DIR=$(dirname -- "$0")
+SCRIPT="$0"
+if [[ -L "$SCRIPT" ]]; then
+  # Resolve link to find script
+  SCRIPT=$(realpath "$SCRIPT")
+fi
+
+SCRIPT_DIR=$(dirname -- "$SCRIPT")
 cd "$SCRIPT_DIR"
 
 image/bin/java -m se.dykstrom.standup/se.dykstrom.standup.StandUp "$@"
