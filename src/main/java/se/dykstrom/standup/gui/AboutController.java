@@ -37,6 +37,6 @@ public class AboutController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         versionLabel.setText("Version " + Version.instance());
-        copyrightLabel.setText("\u00a9 2001-2021 Johan Dykström");
+        copyrightLabel.setText("© 2001-2023 Johan Dykström");
     }
 }
