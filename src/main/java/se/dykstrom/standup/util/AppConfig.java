@@ -16,20 +16,20 @@
 
 package se.dykstrom.standup.util;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import se.dykstrom.standup.model.Settings;
-
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import se.dykstrom.standup.model.Settings;
+
 import static java.lang.System.Logger.Level.ERROR;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * A class that provides the application with configuration data.
@@ -38,7 +38,9 @@ public final class AppConfig {
 
     private static final System.Logger LOGGER = System.getLogger(AppConfig.class.getName());
 
-    private static final String FILE_NAME = System.getProperty("user.home") + "/standup.json";
+    private static final String USER_HOME = System.getProperty("user.home");
+    private static final Path OLD_CONFIG_FILE = Path.of(USER_HOME + "/standup.json");
+    private static final Path NEW_CONFIG_FILE = Path.of(USER_HOME + "/.config/standup/config.json");
 
     /** Cached settings. */
     private static Settings cachedSettings;
@@ -107,11 +109,11 @@ public final class AppConfig {
 	        return cachedSettings;
         }
 
-	    if (Files.notExists(Path.of(FILE_NAME))) {
-	        return new Settings();
+	    if (Files.notExists(NEW_CONFIG_FILE)) {
+	        migrateSettings();
         }
-	    try (FileReader reader = new FileReader(FILE_NAME, StandardCharsets.UTF_8)) {
-            Gson gson = new Gson();
+	    try (final FileReader reader = new FileReader(NEW_CONFIG_FILE.toFile(), UTF_8)) {
+            final Gson gson = new Gson();
             cachedSettings = gson.fromJson(reader, Settings.class);
             return cachedSettings == null ? new Settings() : cachedSettings;
         } catch (IOException e) {
@@ -123,14 +125,35 @@ public final class AppConfig {
     /**
      * Saves all settings to persistent storage.
      */
-    public static void setSettings(Settings settings) {
+    public static void setSettings(final Settings settings) {
         cachedSettings = settings;
 
-        try (Writer writer = new FileWriter(FILE_NAME, StandardCharsets.UTF_8)) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        try (final Writer writer = new FileWriter(NEW_CONFIG_FILE.toFile(), UTF_8)) {
+            final Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(settings, writer);
         } catch (IOException e) {
             LOGGER.log(ERROR, "Failed to save settings", e);
+        }
+    }
+
+    /**
+     * Migrates all settings from the old location "~/standup.json"
+     * to the new location "~/.config/standup/config.json". If no old
+     * settings exist, this method creates a new settings file with
+     * default settings instead.
+     */
+    private static void migrateSettings() {
+        try {
+            // Make sure the settings directory exists
+            Files.createDirectories(NEW_CONFIG_FILE.getParent());
+            // Either move the existing file or create a new file with default settings
+            if (Files.exists(OLD_CONFIG_FILE)) {
+                Files.move(OLD_CONFIG_FILE, NEW_CONFIG_FILE);
+            } else {
+                setSettings(new Settings());
+            }
+        } catch (IOException e) {
+            LOGGER.log(ERROR, "Failed to migrate settings from ''{0}'' to ''{1}'': {2}", OLD_CONFIG_FILE, NEW_CONFIG_FILE, e.getMessage());
         }
     }
 }
