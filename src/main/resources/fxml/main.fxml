@@ -44,7 +44,7 @@ limitations under the License.
             </rowConstraints>
             <Label fx:id="label" styleClass="primary" text="Stand Up!" wrapText="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                 <font>
-                    <Font name="System Bold" size="24.0" />
+                    <Font name="SansSerif Bold" size="24.0" />
                 </font>
             </Label>
             <Button defaultButton="true" onAction="#handleHideAction" styleClass="primary" text="H_ide!" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">

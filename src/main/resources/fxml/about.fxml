@@ -21,7 +21,7 @@ limitations under the License.
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<DialogPane prefHeight="200.0" prefWidth="220" stylesheets="@../css/bootstrap3.css"
+<DialogPane prefWidth="230" prefHeight="200.0" stylesheets="@../css/bootstrap3.css"
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="se.dykstrom.standup.gui.AboutController">
     <content>
@@ -36,15 +36,15 @@ limitations under the License.
             </rowConstraints>
             <Label alignment="CENTER" text="StandUp!" GridPane.halignment="CENTER">
                 <font>
-                    <Font name="System Bold" size="24.0"/>
+                    <Font name="SansSerif Bold" size="24.0"/>
                 </font>
                 <GridPane.margin>
-                    <Insets top="10.0"/>
+                    <Insets top="40.0"/>
                 </GridPane.margin>
             </Label>
             <Label fx:id="versionLabel" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                 <GridPane.margin>
-                    <Insets top="20.0"/>
+                    <Insets top="40.0"/>
                 </GridPane.margin>
             </Label>
             <Label fx:id="copyrightLabel" GridPane.halignment="CENTER" GridPane.rowIndex="2"/>
