@@ -8,7 +8,7 @@ StandUp is a JavaFX desktop application that periodically reminds users to stand
 
 ## Build System
 
-This is a Maven-based Java project using Java 21 and JavaFX 21.
+This is a Maven-based Java project using Java 21 and JavaFX 24.
 
 ### Key Commands
 
@@ -93,9 +93,15 @@ This is necessary for tests to access internal classes in the modular applicatio
 
 ## Dependencies
 
-- JavaFX 21.0.2 (controls, media, fxml)
+- JavaFX 24.0.1 (controls, media, fxml)
 - Gson 2.11.0 (JSON serialization)
 - JUnit 5.13.3 (testing)
+
+## Development Guidelines
+
+- **Unit tests required:** When adding new functionality, always add unit tests to verify it.
+- **Cross-platform:** The application must work on Linux, macOS, and Windows. Avoid OS-specific APIs or path separators.
+- **Plan first:** ALWAYS start in plan mode. Create and display a plan to the user before making any changes.
 
 ## Important Implementation Details
 
