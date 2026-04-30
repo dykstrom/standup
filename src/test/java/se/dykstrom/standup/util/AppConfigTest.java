@@ -43,7 +43,7 @@ class AppConfigTest {
     @Test
     void shouldSaveAndLoadSettings() {
         // Given
-        Settings expectedSettings = new Settings(10, true, true, "foo", false, List.of("bar", "tee"));
+        Settings expectedSettings = new Settings(10, true, true, "foo", false, List.of("bar", "tee"), "de");
 
         // When
         AppConfig.setSettings(expectedSettings);

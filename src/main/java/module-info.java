@@ -7,4 +7,5 @@ module se.dykstrom.standup {
     opens se.dykstrom.standup.gui to javafx.fxml;
     opens se.dykstrom.standup.model to com.google.gson;
     exports se.dykstrom.standup;
+    exports se.dykstrom.standup.i18n;
 }

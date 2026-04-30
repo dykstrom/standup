@@ -21,7 +21,7 @@ limitations under the License.
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<DialogPane prefWidth="230" prefHeight="200.0" stylesheets="@../css/bootstrap3.css"
+<DialogPane fx:id="dialogPane" prefWidth="230" prefHeight="200.0" stylesheets="@../css/bootstrap3.css"
             xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="se.dykstrom.standup.gui.AboutController">
     <content>

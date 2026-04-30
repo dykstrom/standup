@@ -27,6 +27,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Window;
 import javafx.util.Callback;
 import javafx.util.converter.DefaultStringConverter;
+import se.dykstrom.standup.i18n.I18n;
+import se.dykstrom.standup.i18n.Language;
 import se.dykstrom.standup.model.Settings;
 
 import java.io.File;
@@ -41,6 +43,8 @@ import static java.util.Collections.singletonList;
 public class SettingsController {
 
     @FXML
+    private DialogPane dialogPane;
+    @FXML
     private Spinner<Integer> sleepTimeSpinner;
     @FXML
     private CheckBox playSoundCheckBox;
@@ -53,20 +57,19 @@ public class SettingsController {
     @FXML
     private CheckBox morningCheckBox;
     @FXML
+    private ChoiceBox<Language> languageChoiceBox;
+    @FXML
     private ListView<String> messagesListView;
     @FXML
     private Button removeButton;
 
     private final ObservableList<String> messages = FXCollections.observableList(new ArrayList<>());
 
-    /**
-     * Initializes the Settings dialog with the provided settings.
-     */
-    public void initialize(Settings settings) {
+    public void initialize() {
         // Initialize controls
         sleepTimeSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 120, 30));
         messagesListView.setItems(messages);
-        messagesListView.setCellFactory(param -> new TextFieldListCell<>(new DefaultStringConverter()));
+        messagesListView.setCellFactory(_ -> new TextFieldListCell<>(new DefaultStringConverter()));
 
         // Enable or disable controls
         filenameTextField.disableProperty().bind(playSoundCheckBox.selectedProperty().not());
@@ -75,13 +78,26 @@ public class SettingsController {
                 .or(Bindings.size(messagesListView.itemsProperty().getValue()).lessThanOrEqualTo(1))
         );
 
-        // Initialize values
+        // Initialize buttons
+        Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+        okButton.getStyleClass().addAll("primary", "sm");
+        okButton.setText(I18n.get("button.ok"));
+        Button cancelButton = (Button) dialogPane.lookupButton(ButtonType.CANCEL);
+        cancelButton.getStyleClass().addAll("sm");
+        cancelButton.setText(I18n.get("button.cancel"));
+    }
+
+    /**
+     * Initializes the Settings dialog with the provided settings.
+     */
+    public void initialize(Settings settings) {
         sleepTimeSpinner.getValueFactory().setValue(settings.getSleepTime());
         playSoundCheckBox.setSelected(settings.getPlaySound());
         filenameTextField.setText(initializeFilename(settings.getSoundFilename()));
         reminderCheckBox.setSelected(settings.getReminder());
         morningCheckBox.setSelected(settings.getMorningMessage());
-
+        languageChoiceBox.getItems().setAll(Language.values());
+        languageChoiceBox.setValue(Language.fromCode(settings.getLanguage()));
         messages.addAll(initializeMessages(settings.getMessages()));
     }
 
@@ -102,7 +118,8 @@ public class SettingsController {
                         playSoundCheckBox.isSelected(),
                         filenameTextField.getText().strip(),
                         morningCheckBox.isSelected(),
-                        messages
+                        messages,
+                        languageChoiceBox.getValue().getCode()
                 );
             } else {
                 return null;
