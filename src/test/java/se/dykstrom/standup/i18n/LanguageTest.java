@@ -30,13 +30,18 @@ class LanguageTest {
     }
 
     @Test
+    void fromCodeShouldReturnGerman() {
+        assertEquals(Language.GERMAN, Language.fromCode("de"));
+    }
+
+    @Test
     void fromCodeShouldReturnSwedish() {
         assertEquals(Language.SWEDISH, Language.fromCode("sv"));
     }
 
     @Test
     void fromCodeShouldReturnDefaultForUnknownCode() {
-        assertEquals(Language.defaultLanguage(), Language.fromCode("de"));
+        assertEquals(Language.defaultLanguage(), Language.fromCode("fr"));
     }
 
     @Test
@@ -57,12 +62,14 @@ class LanguageTest {
     @Test
     void getCodeShouldReturnLanguageTag() {
         assertEquals("en", Language.ENGLISH.getCode());
+        assertEquals("de", Language.GERMAN.getCode());
         assertEquals("sv", Language.SWEDISH.getCode());
     }
 
     @Test
     void toStringShouldReturnDisplayName() {
         assertEquals("English", Language.ENGLISH.toString());
+        assertEquals("Deutsch", Language.GERMAN.toString());
         assertEquals("Svenska", Language.SWEDISH.toString());
     }
 

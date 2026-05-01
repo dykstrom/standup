@@ -26,6 +26,7 @@ import java.util.Objects;
 public enum Language {
 
     ENGLISH(Locale.ENGLISH, "English"),
+    GERMAN(Locale.GERMAN, "Deutsch"),
     SWEDISH(Locale.of("sv"), "Svenska");
 
     private final Locale locale;
