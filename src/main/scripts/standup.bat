@@ -7,7 +7,7 @@ set SCRIPT_DIR=%~dp0
 
 cd %SCRIPT_DIR%
 
-image\bin\java -m se.dykstrom.standup/se.dykstrom.standup.StandUp %*
+image\bin\java --enable-native-access=javafx.graphics -m se.dykstrom.standup/se.dykstrom.standup.StandUp %*
 
 cd %ORIGINAL_DIR%
 
