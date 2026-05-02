@@ -16,40 +16,42 @@
 
 package se.dykstrom.standup.gui;
 
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.ResourceBundle;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import se.dykstrom.standup.i18n.I18n;
+import se.dykstrom.standup.i18n.Language;
 import se.dykstrom.standup.model.Settings;
 import se.dykstrom.standup.util.AppConfig;
 import se.dykstrom.standup.util.IconUtil;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import static java.lang.System.Logger.Level.ERROR;
+
 /**
  * A controller class for the main window.
  */
-public class MainController implements Initializable {
+public class MainController {
+
+    private static final System.Logger LOGGER = System.getLogger(MainController.class.getName());
 
     @FXML
     private Label label;
@@ -65,8 +67,14 @@ public class MainController implements Initializable {
     /** The audio clip to play when showing the main window. */
     private AudioClip audioClip;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    /** Used to reload the main scene after language change. */
+    private SceneDelegate sceneDelegate;
+
+    public void setSceneDelegate(SceneDelegate sceneDelegate) {
+        this.sceneDelegate = sceneDelegate;
+    }
+
+    public void initialize() {
         label.setText(getRandomMessage());
     }
 
@@ -132,7 +140,7 @@ public class MainController implements Initializable {
         Platform.runLater(() -> {
             // If we have passed midnight change message to a morning greeting
             if (isNextDay() && AppConfig.getMorningMessage()) {
-                label.setText("Good morning!");
+                label.setText(I18n.get("main.message.goodMorning"));
             }
 
             // If frame is still visible, bring it to the front
@@ -145,23 +153,37 @@ public class MainController implements Initializable {
 
     @FXML
     private void handleFileSettingsAction() throws IOException {
-        FXMLLoader loader = new FXMLLoader(MainController.class.getResource("/fxml/settings.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainController.class.getResource("/fxml/settings.fxml"), I18n.getBundle());
         DialogPane dialogPane = loader.load();
 
         SettingsController controller = loader.getController();
         controller.initialize(AppConfig.getSettings());
 
-        // Style default buttons
-        dialogPane.lookupButton(ButtonType.OK).getStyleClass().addAll("primary", "sm");
-        dialogPane.lookupButton(ButtonType.CANCEL).getStyleClass().addAll("sm");
-
         Dialog<Settings> dialog = new Dialog<>();
-        dialog.setTitle("Settings");
+        dialog.setTitle(I18n.get("settings.dialog.title"));
         dialog.setDialogPane(dialogPane);
         dialog.setResultConverter(controller.getResultConverter());
         IconUtil.setIcons((Stage) dialogPane.getScene().getWindow());
         Optional<Settings> result = dialog.showAndWait();
-        result.ifPresent(AppConfig::setSettings);
+        result.ifPresent(this::updateSettings);
+    }
+
+    private void updateSettings(Settings newSettings) {
+        final var oldLanguage = AppConfig.getSettings().getLanguage();
+        final var newLanguage = newSettings.getLanguage();
+
+        AppConfig.setSettings(newSettings);
+
+        // Reload UI in new language if it has changed
+        if (!newLanguage.equals(oldLanguage)) {
+            I18n.setLanguage(Language.fromCode(newLanguage));
+            try {
+                sceneDelegate.reloadScene();
+                executorService.shutdownNow();
+            } catch (IOException e) {
+                LOGGER.log(ERROR, "Failed to reload main scene after language change", e);
+            }
+        }
     }
 
     @FXML
@@ -171,13 +193,11 @@ public class MainController implements Initializable {
 
     @FXML
     private void handleHelpAboutAction() throws IOException {
-        FXMLLoader loader = new FXMLLoader(MainController.class.getResource("/fxml/about.fxml"));
+        FXMLLoader loader = new FXMLLoader(MainController.class.getResource("/fxml/about.fxml"), I18n.getBundle());
         DialogPane dialogPane = loader.load();
-        // Style default buttons
-        dialogPane.lookupButton(ButtonType.OK).getStyleClass().addAll("primary", "sm");
 
         Dialog<Void> dialog = new Dialog<>();
-        dialog.setTitle("About");
+        dialog.setTitle(I18n.get("about.dialog.title"));
         dialog.setDialogPane(dialogPane);
         IconUtil.setIcons((Stage) dialogPane.getScene().getWindow());
         dialog.showAndWait();

@@ -16,6 +16,8 @@
 
 package se.dykstrom.standup.model;
 
+import se.dykstrom.standup.i18n.Language;
+
 import java.util.*;
 
 import static java.util.Collections.singletonList;
@@ -32,12 +34,13 @@ public final class Settings {
     private final String soundFilename;
     private final boolean morningMessage;
     private final List<String> messages = new ArrayList<>();
+    private final String language;
 
     public Settings() {
-        this(30, false, false, "", false, singletonList("Stand Up!"));
+        this(30, false, false, "", false, singletonList("Stand Up!"), Language.fromLocale(Locale.getDefault()).getCode());
     }
 
-    public Settings(int sleepTime, boolean reminder, boolean playSound, String soundFilename, boolean morningMessage, Collection<String> messages) {
+    public Settings(int sleepTime, boolean reminder, boolean playSound, String soundFilename, boolean morningMessage, Collection<String> messages, String language) {
         this.sleepTime = sleepTime;
         this.reminder = reminder;
         this.playSound = playSound;
@@ -47,6 +50,7 @@ public final class Settings {
             throw new IllegalArgumentException("empty list of messages");
         }
         this.messages.addAll(messages);
+        this.language = (language == null || language.isBlank()) ? Language.defaultLanguage().getCode() : language;
     }
 
     public int getSleepTime() {
@@ -73,6 +77,11 @@ public final class Settings {
         return messages;
     }
 
+    /** Returns the ISO 639-1 language code, e.g. "en" or "sv". Never null. */
+    public String getLanguage() {
+        return language == null ? Language.defaultLanguage().getCode() : language;
+    }
+
     @Override
     public String toString() {
         return new StringJoiner(", ", Settings.class.getSimpleName() + "[", "]")
@@ -82,6 +91,7 @@ public final class Settings {
                 .add("soundFilename='" + soundFilename + "'")
                 .add("morningMessage=" + morningMessage)
                 .add("messages=" + messages)
+                .add("language='" + language + "'")
                 .toString();
     }
 
@@ -94,11 +104,12 @@ public final class Settings {
                this.playSound == that.playSound &&
                this.morningMessage == that.morningMessage &&
                this.soundFilename.equals(that.soundFilename) &&
-               this.messages.equals(that.messages);
+               this.messages.equals(that.messages) &&
+               this.getLanguage().equals(that.getLanguage());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sleepTime, reminder, playSound, soundFilename, morningMessage, messages);
+        return Objects.hash(sleepTime, reminder, playSound, soundFilename, morningMessage, messages, getLanguage());
     }
 }

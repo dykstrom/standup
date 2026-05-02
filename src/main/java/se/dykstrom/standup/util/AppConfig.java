@@ -26,6 +26,7 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import se.dykstrom.standup.i18n.Language;
 import se.dykstrom.standup.model.Settings;
 
 import static java.lang.System.Logger.Level.ERROR;
@@ -100,6 +101,13 @@ public final class AppConfig {
 	public static List<String> getMessages() {
 	    return getSettings().getMessages();
 	}
+
+    /**
+     * Returns the configured language.
+     */
+    public static Language getLanguage() {
+        return Language.fromCode(getSettings().getLanguage());
+    }
 
     /**
      * Returns all settings in the form of a {@link Settings} object.

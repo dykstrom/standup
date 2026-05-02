@@ -16,27 +16,32 @@
 
 package se.dykstrom.standup.gui;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
+import se.dykstrom.standup.i18n.I18n;
 import se.dykstrom.standup.util.Version;
 
 /**
  * A controller class for the About dialog.
  */
-public class AboutController implements Initializable {
+public class AboutController {
 
+    @FXML
+    private DialogPane dialogPane;
     @FXML
     private Label versionLabel;
     @FXML
     private Label copyrightLabel;
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        versionLabel.setText("Version " + Version.instance());
-        copyrightLabel.setText("© 2001-2023 Johan Dykström");
+    public void initialize() {
+        versionLabel.setText(I18n.format("about.label.version", Version.instance()));
+        copyrightLabel.setText(I18n.get("about.label.copyright"));
+
+        Button okButton = (Button) dialogPane.lookupButton(ButtonType.OK);
+        okButton.getStyleClass().addAll("primary", "sm");
+        okButton.setText(I18n.get("button.ok"));
     }
 }

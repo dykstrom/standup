@@ -1,0 +1,80 @@
+/*
+ * Copyright 2026 Johan Dykström
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package se.dykstrom.standup.i18n;
+
+import org.junit.jupiter.api.Test;
+
+import java.util.Locale;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class LanguageTest {
+
+    @Test
+    void fromCodeShouldReturnEnglish() {
+        assertEquals(Language.ENGLISH, Language.fromCode("en"));
+    }
+
+    @Test
+    void fromCodeShouldReturnGerman() {
+        assertEquals(Language.GERMAN, Language.fromCode("de"));
+    }
+
+    @Test
+    void fromCodeShouldReturnSwedish() {
+        assertEquals(Language.SWEDISH, Language.fromCode("sv"));
+    }
+
+    @Test
+    void fromCodeShouldReturnDefaultForUnknownCode() {
+        assertEquals(Language.defaultLanguage(), Language.fromCode("fr"));
+    }
+
+    @Test
+    void fromCodeShouldReturnDefaultForNull() {
+        assertEquals(Language.defaultLanguage(), Language.fromCode(null));
+    }
+
+    @Test
+    void fromLocaleShouldReturnSwedish() {
+        assertEquals(Language.SWEDISH, Language.fromLocale(Locale.of("sv")));
+    }
+
+    @Test
+    void fromLocaleShouldReturnDefaultForNull() {
+        assertEquals(Language.defaultLanguage(), Language.fromLocale(null));
+    }
+
+    @Test
+    void getCodeShouldReturnLanguageTag() {
+        assertEquals("en", Language.ENGLISH.getCode());
+        assertEquals("de", Language.GERMAN.getCode());
+        assertEquals("sv", Language.SWEDISH.getCode());
+    }
+
+    @Test
+    void toStringShouldReturnDisplayName() {
+        assertEquals("English", Language.ENGLISH.toString());
+        assertEquals("Deutsch", Language.GERMAN.toString());
+        assertEquals("Svenska", Language.SWEDISH.toString());
+    }
+
+    @Test
+    void defaultLanguageShouldBeEnglish() {
+        assertEquals(Language.ENGLISH, Language.defaultLanguage());
+    }
+}

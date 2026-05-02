@@ -8,7 +8,7 @@ StandUp is a JavaFX desktop application that periodically reminds users to stand
 
 ## Build System
 
-This is a Maven-based Java project using Java 21 and JavaFX 21.
+This is a Maven-based Java project using Java 25 and JavaFX 24.
 
 ### Key Commands
 
@@ -56,6 +56,7 @@ mvn clean install
 - Displays random messages from configured list
 - Handles sound playback and reminder animations
 - Implements midnight detection for morning messages
+- Decoupled from `StandUp` via `SceneDelegate` — calls `delegate.reloadScene()` on language change
 
 **AppConfig** (`src/main/java/se/dykstrom/standup/util/AppConfig.java`):
 - Singleton-style utility for accessing settings
@@ -64,7 +65,7 @@ mvn clean install
 - Uses Gson for JSON serialization/deserialization
 
 **Settings** (`src/main/java/se/dykstrom/standup/model/Settings.java`):
-- Immutable value object containing: sleepTime (minutes), reminder flag, playSound flag, soundFilename, morningMessage flag, and list of messages
+- Immutable value object containing: sleepTime (minutes), reminder flag, playSound flag, soundFilename, morningMessage flag, list of messages, and language code
 - Provides default values: 30 minute sleep time, no reminder, no sound, "Stand Up!" as default message
 
 ### GUI Structure
@@ -72,8 +73,18 @@ mvn clean install
 - JavaFX FXML files in `src/main/resources/fxml/`
 - Controllers in `src/main/java/se/dykstrom/standup/gui/`
 - Dialogs: Settings dialog (`SettingsController`), About dialog (`AboutController`)
+- Each controller is responsible for styling and labelling its own dialog buttons
 - Icons managed by `IconUtil.java`
 - Styled with jbootx theme
+
+### Internationalization (i18n)
+
+- Resource bundles in `src/main/resources/i18n/`: `messages.properties` (English) and `messages_sv.properties` (Swedish)
+- `I18n` (`src/main/java/se/dykstrom/standup/i18n/I18n.java`): central access point — controllers load FXML with `I18n.getBundle()` and look up dynamic strings with `I18n.get(key)` or `I18n.format(key, args)`
+- `Language` (`src/main/java/se/dykstrom/standup/i18n/Language.java`): enum of supported languages; adding a new language requires one new constant and one new `messages_XX.properties` file
+- Language is persisted in `Settings` as an ISO 639-1 code and applied at startup via `I18n.setLanguage()`
+- Changing language reloads the main scene via `SceneDelegate`
+- `ButtonType.OK` and `ButtonType.CANCEL` in FXML use JavaFX's internal bundle; their displayed text is overridden in each controller's `initialize()` using `I18n.get("button.ok")` / `I18n.get("button.cancel")`
 
 ### Module System
 
@@ -82,20 +93,23 @@ This project uses Java Platform Module System (JPMS):
 - Module descriptor: `src/main/java/module-info.java`
 - Opens `gui` package to javafx.fxml for reflection
 - Opens `model` package to com.google.gson for serialization
+- Exports `se.dykstrom.standup` and `se.dykstrom.standup.i18n`
 
 ## Testing Notes
 
-Tests use JUnit 5 (Jupiter). The surefire plugin is configured with:
-```
---add-opens se.dykstrom.standup/se.dykstrom.standup.util=ALL-UNNAMED
-```
-This is necessary for tests to access internal classes in the modular application.
+Tests use JUnit 5 (Jupiter).
 
 ## Dependencies
 
-- JavaFX 21.0.2 (controls, media, fxml)
+- JavaFX 24.0.1 (controls, media, fxml)
 - Gson 2.11.0 (JSON serialization)
 - JUnit 5.13.3 (testing)
+
+## Development Guidelines
+
+- **Unit tests required:** When adding new functionality, always add unit tests to verify it.
+- **Cross-platform:** The application must work on Linux, macOS, and Windows. Avoid OS-specific APIs or path separators.
+- **Plan first:** ALWAYS start in plan mode. Create and display a plan to the user before making any changes.
 
 ## Important Implementation Details
 

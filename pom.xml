@@ -6,14 +6,13 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.release>25</maven.compiler.release>
         <junit.version>5.13.3</junit.version>
-        <javafx.version>21.0.2</javafx.version>
+        <javafx.version>24.0.1</javafx.version>
     </properties>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/dykstrom/standup.git</developerConnection>
+        <developerConnection>scm:git:git@github.com:dykstrom/standup.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -77,9 +76,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.0</version>
-                <configuration>
-                    <argLine>--add-opens se.dykstrom.standup/se.dykstrom.standup.util=ALL-UNNAMED</argLine>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.openjfx</groupId>
@@ -87,6 +83,9 @@
                 <version>0.0.8</version>
                 <configuration>
                     <mainClass>se.dykstrom.standup/se.dykstrom.standup.StandUp</mainClass>
+                    <options>
+                        <option>--enable-native-access=javafx.graphics</option>
+                    </options>
                     <executable>${java.home}/bin/java</executable>
                     <jlinkExecutable>${java.home}/bin/jlink</jlinkExecutable>
                     <stripDebug>true</stripDebug>

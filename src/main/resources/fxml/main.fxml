@@ -24,12 +24,12 @@ limitations under the License.
 <BorderPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../css/bootstrap3.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.dykstrom.standup.gui.MainController">
     <top>
         <MenuBar BorderPane.alignment="CENTER">
-            <Menu text="_File">
-                <MenuItem onAction="#handleFileSettingsAction" text="_Settings..." />
-                <MenuItem onAction="#handleFileExitAction" text="E_xit" />
+            <Menu text="%main.menu.file">
+                <MenuItem onAction="#handleFileSettingsAction" text="%main.menu.file.settings" />
+                <MenuItem onAction="#handleFileExitAction" text="%main.menu.file.exit" />
             </Menu>
-            <Menu text="_Help">
-                <MenuItem onAction="#handleHelpAboutAction" text="_About..." />
+            <Menu text="%main.menu.help">
+                <MenuItem onAction="#handleHelpAboutAction" text="%main.menu.help.about" />
             </Menu>
         </MenuBar>
     </top>
@@ -47,7 +47,7 @@ limitations under the License.
                     <Font name="SansSerif Bold" size="24.0" />
                 </font>
             </Label>
-            <Button defaultButton="true" onAction="#handleHideAction" styleClass="primary" text="H_ide!" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">
+            <Button defaultButton="true" onAction="#handleHideAction" styleClass="primary" text="%main.button.hide" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.vgrow="SOMETIMES">
                 <GridPane.margin>
                     <Insets bottom="20.0" />
                 </GridPane.margin>
