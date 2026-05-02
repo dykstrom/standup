@@ -12,7 +12,7 @@
     </properties>
 
     <scm>
-        <developerConnection>scm:git:https://github.com/dykstrom/standup.git</developerConnection>
+        <developerConnection>scm:git:git@github.com/dykstrom/standup.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
 
