@@ -95,6 +95,34 @@ This project uses Java Platform Module System (JPMS):
 - Opens `model` package to com.google.gson for serialization
 - Exports `se.dykstrom.standup` and `se.dykstrom.standup.i18n`
 
+## GitHub Actions Workflows
+
+Both workflows live in `.github/workflows/`.
+
+**`build.yml`** — runs on every push to `master` (and `feature/matrix-build`) and on pull requests targeting `master`. Builds and packages the application across a matrix of 5 platform/architecture combinations:
+
+| Runner | Arch |
+|--------|------|
+| `ubuntu-latest` | x86_64 |
+| `ubuntu-24.04-arm` | arm64 |
+| `macos-13` | x86_64 |
+| `macos-latest` | arm64 |
+| `windows-latest` | x86_64 |
+
+Windows arm64 (`windows-11-arm`) is excluded until Temurin publishes Java 25 builds for that platform.
+
+**`release.yml`** — triggered by pushing a `v*` tag (e.g. `v5.1.1`). Three jobs run in sequence:
+1. **verify-branch** — confirms the tag points to a commit on `master`
+2. **build** — same 5-platform matrix as `build.yml`, uploads per-platform artifacts
+3. **release** — downloads all artifacts and creates a GitHub release with auto-generated release notes
+
+To cut a release, use the Maven release plugin from `master`:
+```bash
+mvn release:prepare  # tags as v<version>, e.g. v5.1.1
+mvn release:perform
+```
+The `tagNameFormat` in `pom.xml` is set to `v@{project.version}` to match the `v*` trigger.
+
 ## Testing Notes
 
 Tests use JUnit 5 (Jupiter).
