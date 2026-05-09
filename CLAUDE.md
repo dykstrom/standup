@@ -79,12 +79,13 @@ mvn clean install
 
 ### Internationalization (i18n)
 
-- Resource bundles in `src/main/resources/i18n/`: `messages.properties` (English) and `messages_sv.properties` (Swedish)
+- Resource bundles in `src/main/resources/i18n/`: `messages.properties` (English), `messages_sv.properties` (Swedish), `messages_de.properties` (German)
 - `I18n` (`src/main/java/se/dykstrom/standup/i18n/I18n.java`): central access point — controllers load FXML with `I18n.getBundle()` and look up dynamic strings with `I18n.get(key)` or `I18n.format(key, args)`
 - `Language` (`src/main/java/se/dykstrom/standup/i18n/Language.java`): enum of supported languages; adding a new language requires one new constant and one new `messages_XX.properties` file
 - Language is persisted in `Settings` as an ISO 639-1 code and applied at startup via `I18n.setLanguage()`
 - Changing language reloads the main scene via `SceneDelegate`
 - `ButtonType.OK` and `ButtonType.CANCEL` in FXML use JavaFX's internal bundle; their displayed text is overridden in each controller's `initialize()` using `I18n.get("button.ok")` / `I18n.get("button.cancel")`
+- **Encoding:** `maven-resources-plugin` processes `.properties` files as ISO-8859-1; non-ASCII characters (e.g. å, ä, ö, ü) must be written as `\uXXXX` Unicode escapes
 
 ### Module System
 
@@ -93,13 +94,14 @@ This project uses Java Platform Module System (JPMS):
 - Module descriptor: `src/main/java/module-info.java`
 - Opens `gui` package to javafx.fxml for reflection
 - Opens `model` package to com.google.gson for serialization
+- Opens `i18n` package (required for JPMS `ResourceBundle.getBundle` to find `.properties` files)
 - Exports `se.dykstrom.standup` and `se.dykstrom.standup.i18n`
 
 ## GitHub Actions Workflows
 
 Both workflows live in `.github/workflows/`.
 
-**`build.yml`** — runs on every push to `master` (and `feature/matrix-build`) and on pull requests targeting `master`. Builds and packages the application across a matrix of 5 platform/architecture combinations:
+**`build.yml`** — runs on every push to `master` and on pull requests targeting `master`. Builds and packages the application across a matrix of 5 platform/architecture combinations:
 
 | Runner | Arch |
 |--------|------|
