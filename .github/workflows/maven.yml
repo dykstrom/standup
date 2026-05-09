@@ -35,11 +35,6 @@ jobs:
             arch: x86_64
             artifact-name: Windows-x86_64-artifacts
             artifact-path: target/standup-*.zip
-          - os: windows-11-arm
-            arch: arm64
-            artifact-name: Windows-arm64-artifacts
-            artifact-path: target/standup-*.zip
-
     runs-on: ${{ matrix.os }}
 
     steps:
