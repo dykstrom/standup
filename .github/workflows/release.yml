@@ -39,10 +39,6 @@ jobs:
             arch: arm64
             artifact-name: Linux-arm64-artifacts
             artifact-path: target/standup-*.tar.gz
-          - os: macos-13
-            arch: x86_64
-            artifact-name: macOS-x86_64-artifacts
-            artifact-path: target/standup-*.tar.gz
           - os: macos-latest
             arch: arm64
             artifact-name: macOS-arm64-artifacts
