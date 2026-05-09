@@ -32,18 +32,22 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
+            os-name: linux
             arch: x86_64
             artifact-name: Linux-x86_64-artifacts
             artifact-path: target/standup-*.tar.gz
           - os: ubuntu-24.04-arm
+            os-name: linux
             arch: arm64
             artifact-name: Linux-arm64-artifacts
             artifact-path: target/standup-*.tar.gz
           - os: macos-latest
+            os-name: macos
             arch: arm64
             artifact-name: macOS-arm64-artifacts
             artifact-path: target/standup-*.tar.gz
           - os: windows-latest
+            os-name: windows
             arch: x86_64
             artifact-name: Windows-x86_64-artifacts
             artifact-path: target/standup-*.zip
@@ -60,6 +64,15 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+      - name: Rename artifact to include OS and architecture
+        shell: bash
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          for f in target/standup-*-bin.tar.gz target/standup-*-bin.zip; do
+            [ -f "$f" ] || continue
+            ext="${f#*-bin.}"
+            mv "$f" "target/standup-${VERSION}-${{ matrix.os-name }}-${{ matrix.arch }}-bin.${ext}"
+          done
       - name: Upload artifacts
         uses: actions/upload-artifact@v6
         with:
@@ -75,7 +88,7 @@ jobs:
 
     steps:
       - name: Download all artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           path: artifacts/
           merge-multiple: true
