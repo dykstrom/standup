@@ -2,7 +2,7 @@
 
 <div style="text-align: left">
 
-[![Build Status](https://github.com/dykstrom/standup/actions/workflows/maven.yml/badge.svg)](https://github.com/dykstrom/standup/actions/workflows/maven.yml)
+[![Build Status](https://github.com/dykstrom/standup/actions/workflows/build.yml/badge.svg)](https://github.com/dykstrom/standup/actions/workflows/build.yml)
 [![Open Issues](https://img.shields.io/github/issues/dykstrom/standup)](https://github.com/dykstrom/standup/issues)
 [![Latest Release](https://img.shields.io/github/v/release/dykstrom/standup?display_name=release)](https://github.com/dykstrom/standup/releases)
 ![Downloads](https://img.shields.io/github/downloads/dykstrom/standup/total)
