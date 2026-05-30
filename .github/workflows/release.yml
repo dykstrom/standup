@@ -18,8 +18,8 @@ jobs:
 
       - name: Check if tag is on master
         run: |
-          TAG_COMMIT=$(git rev-list -n 1 $GITHUB_REF)
-          if ! git merge-base --is-ancestor $TAG_COMMIT origin/master; then
+          TAG_COMMIT=$(git rev-list -n 1 "$GITHUB_REF")
+          if ! git merge-base --is-ancestor "$TAG_COMMIT" origin/master; then
             echo "Tag is NOT on master branch"
             exit 1
           fi
@@ -40,6 +40,11 @@ jobs:
             os-name: linux
             arch: arm64
             artifact-name: Linux-arm64-artifacts
+            artifact-path: target/standup-*.tar.gz
+          - os: macos-15-intel
+            os-name: macos
+            arch: x86_64
+            artifact-name: macOS-x86_64-artifacts
             artifact-path: target/standup-*.tar.gz
           - os: macos-latest
             os-name: macos
@@ -97,7 +102,7 @@ jobs:
         id: version
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v3

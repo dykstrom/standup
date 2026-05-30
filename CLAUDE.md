@@ -107,7 +107,7 @@ Both workflows live in `.github/workflows/`.
 |--------|------|
 | `ubuntu-latest` | x86_64 |
 | `ubuntu-24.04-arm` | arm64 |
-| `macos-13` | x86_64 |
+| `macos-15-intel` | x86_64 |
 | `macos-latest` | arm64 |
 | `windows-latest` | x86_64 |
 
